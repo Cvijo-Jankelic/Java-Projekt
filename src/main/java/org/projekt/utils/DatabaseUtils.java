@@ -3,11 +3,10 @@ package org.projekt.utils;
 import org.projekt.entity.Ad;
 import org.projekt.entity.Admin;
 import org.projekt.entity.Campaign;
-import org.projekt.entity.User;
+import org.projekt.entity.CommonUser;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +44,8 @@ public class DatabaseUtils {
 
     }
 
-    public static List<User> getUsersFromDataBase(){
-        List<User> usersList = new ArrayList<>();
+    public static List<CommonUser> getCommonUsersFromDataBase(){
+        List<CommonUser> usersList = new ArrayList<>();
 
         return usersList;
     }
