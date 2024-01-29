@@ -1,7 +1,7 @@
 package org.projekt.Enum;
 
 public enum Role {
-    ADMIN, COMMON_USER;
+    ADMIN, COMMON;
 
     public static Role transformFromStringToEnum(String roleStr){
         for(Role role : Role.values()){

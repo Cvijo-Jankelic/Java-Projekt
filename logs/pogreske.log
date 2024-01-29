@@ -53,3 +53,38 @@ java.sql.SQLSyntaxErrorException: Unknown database 'projekt/schema'
 	at org.projekt.projekt/org.projekt.utils.DatabaseUtils.getCampaignsFromDataBase(DatabaseUtils.java:37)
 	at org.projekt.projekt/org.projekt.main.Main.main(Main.java:22)
 29.01.2024. Program je pokrenut
+29.01.2024. Program je pokrenut
+29.01.2024. Program je pokrenut
+29.01.2024. Dogodila se greska kod dohvacanja podataka kampanje sa baze podataka!
+java.sql.SQLException: Column 'companyId' not found.
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:98)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:90)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:64)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.findColumn(ResultSetImpl.java:584)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.getInt(ResultSetImpl.java:851)
+	at org.projekt.projekt/org.projekt.utils.DatabaseUtils.getCampaignsFromDataBase(DatabaseUtils.java:54)
+	at org.projekt.projekt/org.projekt.main.Main.main(Main.java:22)
+29.01.2024. Program je pokrenut
+29.01.2024. Dogodila se greska kod dohvacanja podataka kampanje sa baze podataka!
+java.sql.SQLException: Column 'companyId' not found.
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:98)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:90)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:64)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.findColumn(ResultSetImpl.java:584)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.getInt(ResultSetImpl.java:851)
+	at org.projekt.projekt/org.projekt.utils.DatabaseUtils.getCampaignsFromDataBase(DatabaseUtils.java:54)
+	at org.projekt.projekt/org.projekt.main.Main.main(Main.java:22)
+29.01.2024. Program je pokrenut
+29.01.2024. Dogodila se greska kod dohvacanja podataka kampanje sa baze podataka!
+java.sql.SQLException: Column 'companyId' not found.
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:98)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:90)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:64)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.findColumn(ResultSetImpl.java:584)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.getInt(ResultSetImpl.java:851)
+	at org.projekt.projekt/org.projekt.utils.DatabaseUtils.getCampaignsFromDataBase(DatabaseUtils.java:54)
+	at org.projekt.projekt/org.projekt.main.Main.main(Main.java:22)
+29.01.2024. Program je pokrenut

@@ -1,6 +1,7 @@
 package org.projekt.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Campaign {
@@ -8,17 +9,18 @@ public class Campaign {
     private String name;
     private String description;
     private String status; // indikator statusa kampanje off/on/pause
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private BigDecimal budget;
     private String targetAudience; // ciljana publika
     private String channels; // kanali na kojima se kampanja provodi(drustveni mediji, web, mail, itd..)
     private BigDecimal roi; // povrat ulaganja, moze biti izracunat ili azuriran nakon provedbe kampanje. (Ovo cemo jos razmislit ocemo li ostaviti u projektu ili ne)
     private Integer createdBy; // Id korisnika
+    private Integer companyId;
 
     public Campaign(Integer campaignId, String name, String description, String status,
-                    Date startDate, Date endDate, BigDecimal budget, String targetAudience, String channels,
-                    BigDecimal roi, Integer createdBy) {
+                    LocalDate startDate, LocalDate endDate, BigDecimal budget, String targetAudience, String channels,
+                    BigDecimal roi, Integer createdBy, Integer companyId) {
 
         this.campaignId = campaignId;
         this.name = name;
@@ -31,6 +33,7 @@ public class Campaign {
         this.budget = budget;
         this.roi = roi;
         this.createdBy = createdBy;
+        this.companyId = companyId;
     }
 
     public Integer getCampaignId() {
@@ -65,19 +68,19 @@ public class Campaign {
         this.status = status;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -119,6 +122,14 @@ public class Campaign {
 
     public void setCreatedBy(Integer createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 }
 

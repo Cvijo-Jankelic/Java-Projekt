@@ -1,5 +1,6 @@
 package org.projekt.main;
 
+import org.projekt.entity.Ad;
 import org.projekt.entity.AppUser;
 import org.projekt.entity.Campaign;
 import org.projekt.entity.Company;
@@ -18,10 +19,12 @@ public class Main {
         List<Campaign> campaignList = new ArrayList<>();
         List<AppUser> appUsers = new ArrayList<>();
         List<Company> companies = new ArrayList<>();
+        List<Ad> adList = new ArrayList<>();
 
         campaignList = DatabaseUtils.getCampaignsFromDataBase();
         appUsers = DatabaseUtils.getAppUsersFromDataBase();
         companies = DatabaseUtils.getCompaniesFromDataBase();
+        adList = DatabaseUtils.getAdsFromDataBase();
 
 
     }

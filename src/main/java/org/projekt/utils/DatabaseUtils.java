@@ -9,11 +9,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.spi.CalendarDataProvider;
 
 public class DatabaseUtils {
 
@@ -44,16 +44,17 @@ public class DatabaseUtils {
                 String name = rs.getString("name");
                 String description = rs.getString("description");
                 String status = rs.getString("status");
-                Date startDate = rs.getDate("startDate");
-                Date endDate = rs.getDate("endDate");
+                LocalDate startDate = rs.getDate("startDate").toLocalDate();
+                LocalDate endDate = rs.getDate("endDate").toLocalDate();
                 BigDecimal budget = rs.getBigDecimal("budget");
                 String targetAudience = rs.getString("targetAudience");
                 String channels = rs.getString("channels");
                 BigDecimal roi = rs.getBigDecimal("ROI");
                 Integer createdByID = rs.getInt("createdBy");
+                Integer companyId = rs.getInt("tvrtkaId");
 
                 Campaign campaign = new Campaign(campaignId, name, description,
-                        status, startDate, endDate, budget, targetAudience, channels, roi, createdByID);
+                        status, startDate, endDate, budget, targetAudience, channels, roi, createdByID, companyId);
 
                 campaignList.add(campaign);
 
@@ -125,7 +126,7 @@ public class DatabaseUtils {
                     if(role == Role.ADMIN){
                         AppUser adminUser = new Admin(userId, username, password, role, created_at);
                         appUsersList.add(adminUser);
-                    }else if(role == Role.COMMON_USER){
+                    }else if(role == Role.COMMON){
                         AppUser commonUser = new CommonUser(userId, username, password, role, created_at);
                         appUsersList.add(commonUser);
                     }else{
@@ -173,6 +174,94 @@ public class DatabaseUtils {
             System.out.println(message);
         }
         return companies;
+    }
+
+    public static void saveUsersToDataBase(AppUser userToInsert){
+        try(Connection connection = connectionToDataBase()) {
+
+            String sqlQuery = "INSERT INTO users(username, password, role) VALUES(?, ?, ?);";
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+            pstmt.setString(1, userToInsert.getUsername());
+            pstmt.setString(2, userToInsert.getPassword());
+            pstmt.setString(3, userToInsert.getRole().toString());
+            pstmt.execute();
+
+        } catch (SQLException | IOException ex) {
+            String message = "Dogodila se greska kod spremanja korisnika u bazu podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
+    }
+
+    public static void saveAdsToDataBase(Ad adToInsert){
+
+    }
+
+    public static void saveCampaignToDataBase(Campaign campaignToInsert){
+        try(Connection connection = connectionToDataBase()){
+            String sqlQuery = "INSERT INTO campaign(name, description, status, startDate, endDate, budget, targetAudience, channels, createdBy, tvrtkaId) " +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+            pstmt.setString(1, campaignToInsert.getName());
+            pstmt.setString(2, campaignToInsert.getDescription());
+            pstmt.setString(3, campaignToInsert.getStatus());
+            pstmt.setString(4, campaignToInsert.getStartDate().toString());
+            pstmt.setString(5, campaignToInsert.getEndDate().toString());
+            pstmt.setBigDecimal(6, campaignToInsert.getBudget());
+            pstmt.setString(7, campaignToInsert.getTargetAudience());
+            pstmt.setString(8, campaignToInsert.getChannels());
+            pstmt.setInt(9, campaignToInsert.getCreatedBy());
+            pstmt.setInt(10, campaignToInsert.getCompanyId());
+            pstmt.execute();
+
+
+        }catch (SQLException | IOException ex) {
+            String message = "Dogodila se greska kod spremanja kampanje u bazu podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
+    }
+
+    public static void saveCompanyToDataBase(Company companyToInsert){
+        try(Connection connection = connectionToDataBase()){
+            String sqlQuery = "INSERT INTO tvrtke(nazivTvrtke, adresaTvrtke, kontaktInformacije) VALUES(?, ?, ?);";
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+
+            pstmt.setString(1, companyToInsert.getCompanyName());
+            pstmt.setString(2, companyToInsert.getCompanyAddress());
+            pstmt.setString(3, companyToInsert.getCompanyContact());
+            pstmt.execute();
+
+        }catch (SQLException | IOException ex) {
+            String message = "Dogodila se greska kod spremanja tvrtke u bazu podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
+    }
+
+    public static void saveAdToAdToDataBase(Ad insertToAd){
+        try(Connection connection = connectionToDataBase()){
+            String sqlQuery = "INSERT INTO ad(name, content, type, status, targetAudience, startDate, endDate, campaignID, impressions, clicks, conversions) " +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+            pstmt.setString(1, insertToAd.getName());
+            pstmt.setString(2, insertToAd.getContent());
+            pstmt.setString(3, insertToAd.getType());
+            pstmt.setString(4, insertToAd.getStatus());
+            pstmt.setString(5, insertToAd.getTargetAudience());
+            pstmt.setDate(6, Date.valueOf(insertToAd.getStartDate().toString()));
+            pstmt.setDate(7, Date.valueOf(insertToAd.getEndDate().toString()));
+            pstmt.setInt(8, insertToAd.getCampaignId());
+            pstmt.setInt(9, insertToAd.getImpressions());
+            pstmt.setLong(10, insertToAd.getClicks());
+            pstmt.setLong(11, insertToAd.getImpressions());
+            pstmt.execute();
+
+        }catch (SQLException | IOException ex) {
+            String message = "Dogodila se greska kod spremanja reklama u bazu podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
     }
 
 
