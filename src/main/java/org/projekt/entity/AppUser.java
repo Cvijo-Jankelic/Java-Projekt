@@ -1,15 +1,18 @@
 package org.projekt.entity;
 
+import org.projekt.Enum.Role;
+
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public abstract class AppUser {
     private Integer id;
     private String username;
     private String password;
-    private String role;
-    private Timestamp createdAt;
+    private Role role;
+    private LocalDateTime createdAt;
 
-    public AppUser(Integer id, String username, String password, String role, Timestamp createdAt) {
+    public AppUser(Integer id, String username, String password, Role role, LocalDateTime createdAt) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -41,19 +44,19 @@ public abstract class AppUser {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 }

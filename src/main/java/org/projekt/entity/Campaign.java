@@ -7,18 +7,18 @@ public class Campaign {
     private Integer campaignId;
     private String name;
     private String description;
-    private String status;
+    private String status; // indikator statusa kampanje off/on/pause
     private Date startDate;
     private Date endDate;
-    private String targetAudience;
-    private String channels;
     private BigDecimal budget;
-    private BigDecimal roi;
+    private String targetAudience; // ciljana publika
+    private String channels; // kanali na kojima se kampanja provodi(drustveni mediji, web, mail, itd..)
+    private BigDecimal roi; // povrat ulaganja, moze biti izracunat ili azuriran nakon provedbe kampanje. (Ovo cemo jos razmislit ocemo li ostaviti u projektu ili ne)
     private Integer createdBy; // Id korisnika
 
     public Campaign(Integer campaignId, String name, String description, String status,
-                    Date startDate, Date endDate, String targetAudience, String channels,
-                    BigDecimal budget, BigDecimal roi, Integer createdBy) {
+                    Date startDate, Date endDate, BigDecimal budget, String targetAudience, String channels,
+                    BigDecimal roi, Integer createdBy) {
 
         this.campaignId = campaignId;
         this.name = name;

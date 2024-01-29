@@ -13,12 +13,12 @@ public class Ad {
     private Date endDate;
     private Integer campaignId;
     private Integer impressions;
-    private Integer clicks;
+    private Long clicks;
     private Integer conversions;
 
     public Ad(Integer adID, String name, String content, String type, String status,
               String targetAudience, Date startDate, Date endDate, Integer campaignId, Integer impressions,
-              Integer clicks, Integer conversions) {
+              Long clicks, Integer conversions) {
         this.adID = adID;
         this.name = name;
         this.content = content;
@@ -113,11 +113,11 @@ public class Ad {
         this.impressions = impressions;
     }
 
-    public Integer getClicks() {
+    public Long getClicks() {
         return clicks;
     }
 
-    public void setClicks(Integer clicks) {
+    public void setClicks(Long clicks) {
         this.clicks = clicks;
     }
 

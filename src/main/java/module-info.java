@@ -3,6 +3,7 @@ module org.projekt.projekt {
     requires javafx.fxml;
     requires javafx.web;
     requires java.sql;
+    requires org.slf4j;
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;

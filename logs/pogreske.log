@@ -1,0 +1,55 @@
+29.01.2024. Program je pokrenut
+29.01.2024. Dogodila se greska kod dohvacanja podataka kampanje sa baze podataka!
+java.sql.SQLSyntaxErrorException: Unknown database 'projekt/schema'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:239)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:188)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+	at org.projekt.projekt/org.projekt.utils.DatabaseUtils.connectionToDataBase(DatabaseUtils.java:29)
+	at org.projekt.projekt/org.projekt.utils.DatabaseUtils.getCampaignsFromDataBase(DatabaseUtils.java:37)
+	at org.projekt.projekt/org.projekt.main.Main.main(Main.java:22)
+29.01.2024. Dogodila se greska kod dohvacanja korisnika sa baze podataka!
+java.sql.SQLSyntaxErrorException: Unknown database 'projekt/schema'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:239)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:188)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+	at org.projekt.projekt/org.projekt.utils.DatabaseUtils.connectionToDataBase(DatabaseUtils.java:29)
+	at org.projekt.projekt/org.projekt.utils.DatabaseUtils.getAppUsersFromDataBase(DatabaseUtils.java:112)
+	at org.projekt.projekt/org.projekt.main.Main.main(Main.java:23)
+29.01.2024. Dogodila se greska kod dohvacanja kompanija sa baze podataka!
+java.sql.SQLSyntaxErrorException: Unknown database 'projekt/schema'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:239)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:188)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+	at org.projekt.projekt/org.projekt.utils.DatabaseUtils.connectionToDataBase(DatabaseUtils.java:29)
+	at org.projekt.projekt/org.projekt.utils.DatabaseUtils.getCompaniesFromDataBase(DatabaseUtils.java:154)
+	at org.projekt.projekt/org.projekt.main.Main.main(Main.java:24)
+29.01.2024. Program je pokrenut
+29.01.2024. Dogodila se greska kod dohvacanja podataka kampanje sa baze podataka!
+java.sql.SQLSyntaxErrorException: Unknown database 'projekt/schema'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:239)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:188)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+	at org.projekt.projekt/org.projekt.utils.DatabaseUtils.connectionToDataBase(DatabaseUtils.java:29)
+	at org.projekt.projekt/org.projekt.utils.DatabaseUtils.getCampaignsFromDataBase(DatabaseUtils.java:37)
+	at org.projekt.projekt/org.projekt.main.Main.main(Main.java:22)
+29.01.2024. Program je pokrenut
