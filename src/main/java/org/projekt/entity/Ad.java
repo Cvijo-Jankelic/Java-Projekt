@@ -1,5 +1,7 @@
 package org.projekt.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Ad {
@@ -9,15 +11,15 @@ public class Ad {
     private String type;
     private String status;
     private String targetAudience;
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private Integer campaignId;
     private Integer impressions;
     private Long clicks;
-    private Integer conversions;
+    private Integer conversions; // Uspjesno provedena akcija kao rezultat oglasavanja
 
     public Ad(Integer adID, String name, String content, String type, String status,
-              String targetAudience, Date startDate, Date endDate, Integer campaignId, Integer impressions,
+              String targetAudience, LocalDateTime startDate, LocalDateTime endDate, Integer campaignId, Integer impressions,
               Long clicks, Integer conversions) {
         this.adID = adID;
         this.name = name;
@@ -81,19 +83,19 @@ public class Ad {
         this.targetAudience = targetAudience;
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public LocalDateTime getEndDate() {
+        return  endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 

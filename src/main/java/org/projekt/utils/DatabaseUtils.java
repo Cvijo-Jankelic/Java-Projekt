@@ -1,6 +1,8 @@
 package org.projekt.utils;
 
+import javafx.scene.control.DatePicker;
 import org.projekt.Enum.Role;
+import org.projekt.builders.*;
 import org.projekt.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,10 +10,14 @@ import org.slf4j.LoggerFactory;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Properties;
 
@@ -53,8 +59,7 @@ public class DatabaseUtils {
                 Integer createdByID = rs.getInt("createdBy");
                 Integer companyId = rs.getInt("tvrtkaId");
 
-                Campaign campaign = new Campaign(campaignId, name, description,
-                        status, startDate, endDate, budget, targetAudience, channels, roi, createdByID, companyId);
+                Campaign campaign = new CampaignBuilder().setCampaignId(campaignId).setName(name).setDescription(description).setStatus(status).setStartDate(startDate).setEndDate(endDate).setBudget(budget).setTargetAudience(targetAudience).setChannels(channels).setRoi(roi).setCreatedBy(createdByID).setCompanyId(companyId).createCampaign();
 
                 campaignList.add(campaign);
 
@@ -83,15 +88,30 @@ public class DatabaseUtils {
                 String type = rs.getString("type");
                 String status = rs.getString("status");
                 String targetAudience = rs.getString("targetAudience");
-                Date startDate = rs.getDate("startDate");
-                Date endDate = rs.getDate("endDate");
+                Timestamp sqlStartDate = rs.getTimestamp("startDate");
+                Timestamp sqlEndDate = rs.getTimestamp("endDate");
                 Integer campaignId = rs.getInt("campaignID");
                 Integer impression = rs.getInt("impressions");
                 Long clicks = rs.getLong("clicks");
                 Integer conversions = rs.getInt("conversions");
 
-                Ad ad = new Ad(id, name, content, type, status, targetAudience,
-                        startDate, endDate, campaignId, impression, clicks, conversions);
+                LocalDateTime startDate = sqlStartDate.toLocalDateTime();
+                LocalDateTime endDate = sqlEndDate.toLocalDateTime();
+
+                Ad ad = new AdBuilder()
+                        .setAdID(id)
+                        .setName(name)
+                        .setContent(content)
+                        .setType(type)
+                        .setStatus(status)
+                        .setTargetAudience(targetAudience)
+                        .setStartDate(startDate)
+                        .setEndDate(endDate)
+                        .setCampaignId(campaignId)
+                        .setImpressions(impression)
+                        .setClicks(clicks)
+                        .setConversions(conversions)
+                        .createAd();
 
                 adList.add(ad);
             }
@@ -124,10 +144,10 @@ public class DatabaseUtils {
                 LocalDateTime created_at = rs.getObject("created_at", LocalDateTime.class);
                 try{
                     if(role == Role.ADMIN){
-                        AppUser adminUser = new Admin(userId, username, password, role, created_at);
+                        AppUser adminUser = new AdminBuilder().setId(userId).setUsername(username).setPassword(password).setRole(role).setCreatedAt(created_at).createAdmin();
                         appUsersList.add(adminUser);
                     }else if(role == Role.COMMON){
-                        AppUser commonUser = new CommonUser(userId, username, password, role, created_at);
+                        AppUser commonUser = new CommonUserBuilder().setId(userId).setUsername(username).setPassword(password).setRole(role).setCreatedAt(created_at).createCommonUser();
                         appUsersList.add(commonUser);
                     }else{
                         throw new IllegalArgumentException("Unknown role: " + roleStr);
@@ -162,7 +182,7 @@ public class DatabaseUtils {
                 String name = rs.getString("nazivTvrtke");
                 String address = rs.getString("adresaTvrtke");
                 String contact = rs.getString("kontaktInformacije");
-                Company company = new Company(id, name, address, contact);
+                Company company = new CompanyBuilder().setCompanyId(id).setCompanyName(name).setCompanyAddress(address).setCompanyContact(contact).createCompany();
 
                 companies.add(company);
             }
@@ -176,13 +196,22 @@ public class DatabaseUtils {
         return companies;
     }
 
-    public static void saveUsersToDataBase(AppUser userToInsert){
+    public static void saveUsersToDataBase(AppUser userToInsert) throws NoSuchAlgorithmException {
+
+        String password = userToInsert.getPassword();
+
+        SecureRandom sr = new SecureRandom();
+        byte[] salt = new byte[16];
+        sr.nextBytes(salt);
+
+        String hashedPassword = hashingPassword(password, salt);
+
         try(Connection connection = connectionToDataBase()) {
 
             String sqlQuery = "INSERT INTO users(username, password, role) VALUES(?, ?, ?);";
             PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
             pstmt.setString(1, userToInsert.getUsername());
-            pstmt.setString(2, userToInsert.getPassword());
+            pstmt.setString(2, hashedPassword);
             pstmt.setString(3, userToInsert.getRole().toString());
             pstmt.execute();
 
@@ -193,11 +222,43 @@ public class DatabaseUtils {
         }
     }
 
+    public static String hashingPassword(String password, byte[] salt) throws NoSuchAlgorithmException {
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        byte[] hashedBytes = messageDigest.digest(password.getBytes());
+
+        return Base64.getEncoder().encodeToString(hashedBytes);
+    }
+
     public static void saveAdsToDataBase(Ad adToInsert){
+        LocalDateTime startDate = adToInsert.getStartDate();
+        LocalDateTime endDate = adToInsert.getEndDate();
+
+        Timestamp startTimestamp = Timestamp.valueOf(startDate);
+        Timestamp endTimestamp = Timestamp.valueOf(endDate);
+
+        try(Connection connection = connectionToDataBase()){
+            String sqlQuery = "INSERT INTO ad(name, content, type, status, targetAudience, startDate, endDate, campaignID) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+            pstmt.setString(1, adToInsert.getName());
+            pstmt.setString(2, adToInsert.getContent());
+            pstmt.setString(3, adToInsert.getType());
+            pstmt.setString(4, adToInsert.getStatus());
+            pstmt.setString(5, adToInsert.getTargetAudience());
+            pstmt.setTimestamp(6, startTimestamp);
+            pstmt.setTimestamp(7, endTimestamp);
+            pstmt.setInt(8, adToInsert.getCampaignId());
+            pstmt.execute();
+
+        }catch (SQLException | IOException ex) {
+            String message = "Dogodila se greska kod spremanja reklama u bazu podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
 
     }
 
     public static void saveCampaignToDataBase(Campaign campaignToInsert){
+
         try(Connection connection = connectionToDataBase()){
             String sqlQuery = "INSERT INTO campaign(name, description, status, startDate, endDate, budget, targetAudience, channels, createdBy, tvrtkaId) " +
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -205,8 +266,8 @@ public class DatabaseUtils {
             pstmt.setString(1, campaignToInsert.getName());
             pstmt.setString(2, campaignToInsert.getDescription());
             pstmt.setString(3, campaignToInsert.getStatus());
-            pstmt.setString(4, campaignToInsert.getStartDate().toString());
-            pstmt.setString(5, campaignToInsert.getEndDate().toString());
+            pstmt.setDate(4, java.sql.Date.valueOf(campaignToInsert.getStartDate()));
+            pstmt.setDate(5, java.sql.Date.valueOf(campaignToInsert.getEndDate()));
             pstmt.setBigDecimal(6, campaignToInsert.getBudget());
             pstmt.setString(7, campaignToInsert.getTargetAudience());
             pstmt.setString(8, campaignToInsert.getChannels());
@@ -263,11 +324,28 @@ public class DatabaseUtils {
             System.out.println(message);
         }
     }
+    public static void removeUsersFromDataBase(String userToDelete) {
+        try(Connection connection = DatabaseUtils.connectionToDataBase()){
+            Integer idNumber = Integer.valueOf(userToDelete);
+            String sqlQuery = "DELETE FROM users where id = idNumber";
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Korisnik s ID-om " + userToDelete + " je obrisan.");
+            }else{
+                System.out.println("Korisnik sa ID-om " + userToDelete + " nije pronadjen u bazi podataka");
+            }
 
 
+        } catch (SQLException | IOException ex) {
+            String message = "Dogodila se greska kod brisanja korisnika sa baze podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
 
 
-
-
+    }
 
 }

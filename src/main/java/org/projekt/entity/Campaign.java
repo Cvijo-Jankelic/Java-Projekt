@@ -2,7 +2,6 @@ package org.projekt.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Campaign {
     private Integer campaignId;

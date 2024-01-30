@@ -1,0 +1,59 @@
+package org.projekt.services;
+
+import org.projekt.utils.DatabaseUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Base64;
+
+public class LoginService {
+    private static final String DATABASE_FILE = "database-properties/database.properties";
+    private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
+
+    public static boolean checkLogin(String username, String password){
+
+        try(Connection connection = DatabaseUtils.connectionToDataBase()){
+            String sqlQuery = "SELECT password FROM users WHERE username = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+            pstmt.setString(1, username);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()){
+                String storedHashedPassword = rs.getString("password");
+
+                String hashedPassword = hashPassword(password);
+
+                if(storedHashedPassword.equals(hashedPassword)){
+                    return true;
+                }
+
+            }
+
+            return false;
+
+
+        }catch (SQLException | IOException ex) {
+            String message = "Dogodila se greska kod logiranja i pronalazenja sifre u bazi podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+            return false;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String hashPassword(String password) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashBytes = digest.digest(password.getBytes());
+
+        return Base64.getEncoder().encodeToString(hashBytes);
+    }
+}
