@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MenuBarController implements Initializable {
+public class MenuBarAdminController implements Initializable {
     @FXML
     private ImageView exit;
     @FXML
@@ -69,6 +69,7 @@ public class MenuBarController implements Initializable {
     public void setVisible(boolean visible) {
         slider.setVisible(visible);
     }
+
     public void showAdsScreen(){
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("ad-screen.fxml"));
@@ -120,5 +121,67 @@ public class MenuBarController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+    public void showAdsManagingScreen(){
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("adsManaging.fxml"));
+        try{
+            Scene scene = new Scene(fxmlLoader.load(), 700, 400);
+            HelloApplication.mainStage.setTitle("Ads manager");
+            HelloApplication.mainStage.setScene(scene);
+            HelloApplication.mainStage.show();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void showCampaignManagingScreen(){
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("campaignManaging.fxml"));
+        try{
+            Scene scene = new Scene(fxmlLoader.load(), 700, 400);
+            HelloApplication.mainStage.setTitle("Campaign manager");
+            HelloApplication.mainStage.setScene(scene);
+            HelloApplication.mainStage.show();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void showCompanyManagingScreen(){
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("companyManaging.fxml"));
+        try{
+            Scene scene = new Scene(fxmlLoader.load(), 700, 400);
+            HelloApplication.mainStage.setTitle("Company manager");
+            HelloApplication.mainStage.setScene(scene);
+            HelloApplication.mainStage.show();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void showUsersManagementScreen(){
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("usersManaging.fxml"));
+        try{
+            Scene scene = new Scene(fxmlLoader.load(), 700, 400);
+            HelloApplication.mainStage.setTitle("User manager");
+            HelloApplication.mainStage.setScene(scene);
+            HelloApplication.mainStage.show();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void showDashboardManagingScreen(){
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("dashboardManaging.fxml"));
+        try{
+            Scene scene = new Scene(fxmlLoader.load(), 700, 400);
+            HelloApplication.mainStage.setTitle("User manager");
+            HelloApplication.mainStage.setScene(scene);
+            HelloApplication.mainStage.show();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 }

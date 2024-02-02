@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.projekt.controllers.MenuBarAdminController">
+    <stylesheets>
+        <URL value="@Style.css" />
+    </stylesheets>
+    <children>
+        <BorderPane layoutY="-6.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-6.0">
+            <left>
+                <AnchorPane fx:id="slider" prefHeight="380.0" prefWidth="201.0" style="-fx-background-color: #0A4969;" BorderPane.alignment="CENTER">
+                    <children>
+                        <VBox layoutX="-1.0" layoutY="-1.0" prefHeight="363.0" prefWidth="202.0" style="-fx-background-color: #0A4969;" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-1.0">
+                            <children>
+                                <JFXButton alignment="BOTTOM_LEFT" onAction="#showDashboard" prefHeight="38.0" prefWidth="176.0" styleClass="sideBarItem" text="Dashboard" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="15.0" />
+                                    </font>
+                                    <graphic>
+                                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../img/dashboard.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </JFXButton>
+                                <JFXButton alignment="BOTTOM_LEFT" onAction="#showCampaign" prefHeight="38.0" prefWidth="176.0" styleClass="sideBarItem" text="Campaign" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="15.0" />
+                                    </font>
+                                    <graphic>
+                                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../img/add.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </JFXButton>
+                                <JFXButton alignment="BOTTOM_LEFT" onAction="#showAdsScreen" prefHeight="38.0" prefWidth="176.0" styleClass="sideBarItem" text="Ads" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="15.0" />
+                                    </font>
+                                    <graphic>
+                                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../img/report.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </JFXButton>
+                                <JFXButton alignment="BOTTOM_LEFT" onAction="#showCompany" prefHeight="38.0" prefWidth="176.0" styleClass="sideBarItem" text="Company" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="15.0" />
+                                    </font>
+                                    <graphic>
+                                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../img/data.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </JFXButton>
+                        <Line endX="100.0" startX="-100.0" />
+                        <JFXButton alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="124.0" onAction="#showDashboardManagingScreen" prefHeight="38.0" prefWidth="176.0" styleClass="sideBarItem" text="Db manager" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../img/settings.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="162.0" onAction="#showCampaignManagingScreen" prefHeight="38.0" prefWidth="176.0" styleClass="sideBarItem" text="Cpgn manager" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../img/settings.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="200.0" onAction="#showAdsManagingScreen" prefHeight="38.0" prefWidth="176.0" styleClass="sideBarItem" text="Ads manager" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../img/settings.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="238.0" onAction="#showCompanyManagingScreen" prefHeight="38.0" prefWidth="176.0" styleClass="sideBarItem" text="Compny manager" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../img/settings.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="259.0" onAction="#showUsersManagementScreen" prefHeight="40.0" prefWidth="176.0" styleClass="sideBarItem" text="User manager" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../img/settings.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                            </children></VBox>
+                    </children>
+                </AnchorPane>
+            </left>
+         <top>
+            <AnchorPane prefHeight="45.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="menu" layoutX="14.0" layoutY="12.0" text="MENU">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/menu.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="menuBack" layoutX="14.0" layoutY="12.0" text="MENU">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/menu.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </top>
+        </BorderPane>
+    </children>
+</AnchorPane>

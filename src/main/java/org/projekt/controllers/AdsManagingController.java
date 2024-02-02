@@ -1,4 +1,4 @@
-package org.projekt.adminControllers;
+package org.projekt.controllers;
 
 public class AdsManagingController {
 }

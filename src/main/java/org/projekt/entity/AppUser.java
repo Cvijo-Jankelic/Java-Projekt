@@ -59,4 +59,9 @@ public abstract class AppUser {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Override
+    public String toString() {
+        return username;
+    }
 }

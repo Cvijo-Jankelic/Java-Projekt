@@ -15,6 +15,9 @@ module org.projekt.projekt {
     opens org.projekt.runner to javafx.fxml;
     exports org.projekt.runner;
     opens org.projekt.controllers;
-    opens org.projekt.adminControllers;
     opens org.projekt.standardGui;
+    exports org.projekt.standardGui;
+    exports org.projekt.controllers;
+
+
 }

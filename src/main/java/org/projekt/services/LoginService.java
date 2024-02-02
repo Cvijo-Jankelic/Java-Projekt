@@ -31,6 +31,8 @@ public class LoginService {
 
                 String hashedPassword = hashPassword(password);
 
+
+
                 if(storedHashedPassword.equals(hashedPassword)){
                     return true;
                 }
@@ -50,7 +52,7 @@ public class LoginService {
         }
     }
 
-    private static String hashPassword(String password) throws NoSuchAlgorithmException {
+    public static String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hashBytes = digest.digest(password.getBytes());
 

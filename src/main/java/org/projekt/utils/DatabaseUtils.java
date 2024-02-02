@@ -1,9 +1,12 @@
 package org.projekt.utils;
 
 import javafx.scene.control.DatePicker;
+import org.kordamp.ikonli.javafx.IkonResolver;
 import org.projekt.Enum.Role;
 import org.projekt.builders.*;
+import org.projekt.controllers.LoginController;
 import org.projekt.entity.*;
+import org.projekt.services.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -144,10 +147,22 @@ public class DatabaseUtils {
                 LocalDateTime created_at = rs.getObject("created_at", LocalDateTime.class);
                 try{
                     if(role == Role.ADMIN){
-                        AppUser adminUser = new AdminBuilder().setId(userId).setUsername(username).setPassword(password).setRole(role).setCreatedAt(created_at).createAdmin();
+                        AppUser adminUser = new AdminBuilder()
+                                .setId(userId)
+                                .setUsername(username)
+                                .setPassword(password)
+                                .setRole(role)
+                                .setCreatedAt(created_at)
+                                .createAdmin();
                         appUsersList.add(adminUser);
                     }else if(role == Role.COMMON){
-                        AppUser commonUser = new CommonUserBuilder().setId(userId).setUsername(username).setPassword(password).setRole(role).setCreatedAt(created_at).createCommonUser();
+                        AppUser commonUser = new CommonUserBuilder()
+                                .setId(userId)
+                                .setUsername(username)
+                                .setPassword(password)
+                                .setRole(role)
+                                .setCreatedAt(created_at)
+                                .createCommonUser();
                         appUsersList.add(commonUser);
                     }else{
                         throw new IllegalArgumentException("Unknown role: " + roleStr);
@@ -326,16 +341,17 @@ public class DatabaseUtils {
     }
     public static void removeUsersFromDataBase(String userToDelete) {
         try(Connection connection = DatabaseUtils.connectionToDataBase()){
-            Integer idNumber = Integer.valueOf(userToDelete);
-            String sqlQuery = "DELETE FROM users where id = idNumber";
+            String userNameStr = userToDelete;
+            String sqlQuery = "DELETE FROM users where username = ?";
             PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+            pstmt.setString(1, userNameStr);
 
             int rowsAffected = pstmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("Korisnik s ID-om " + userToDelete + " je obrisan.");
+                System.out.println("Korisnik " + userToDelete + " je obrisan.");
             }else{
-                System.out.println("Korisnik sa ID-om " + userToDelete + " nije pronadjen u bazi podataka");
+                System.out.println("Korisnik " + userToDelete + " nije pronadjen u bazi podataka");
             }
 
 
@@ -347,5 +363,64 @@ public class DatabaseUtils {
 
 
     }
+    public static void updatePasswordToDatabase(String password) throws NoSuchAlgorithmException {
 
+        String passwordToInsert = LoginService.hashPassword(password);
+
+        String sqlQuery = "UPDATE users SET password = ? WHERE id = ?";
+
+
+    }
+
+
+    public static String findTheUserFromUsernameForRole(String username) {
+        String sqlQuery = "SELECT * FROM users WHERE username = ?";
+        String roleStrForLogging = null;
+
+        try (Connection connection = connectionToDataBase()) {
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+            pstmt.setString(1, username);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Integer id = rs.getInt("id");
+                String korisnickoIme = rs.getString("username");
+                String password = rs.getString("password");
+                String roleStr = rs.getString("role");
+                Role role = Role.transformFromStringToEnum(roleStr);
+
+                if (role == Role.ADMIN) {
+                    AppUser adminUser = new AdminBuilder()
+                            .setId(id)
+                            .setUsername(korisnickoIme)
+                            .setPassword(password)
+                            .setRole(role)
+                            .createAdmin();
+
+                    roleStrForLogging = roleStr;
+
+                } else if (role == Role.COMMON) {
+                    AppUser commonUser = new CommonUserBuilder()
+                            .setId(id)
+                            .setUsername(korisnickoIme)
+                            .setPassword(password)
+                            .setRole(role)
+                            .createCommonUser();
+                    roleStrForLogging = roleStr;
+
+                }else{
+                    throw new IllegalArgumentException("Unknown role: " + roleStr);
+                }
+
+            }
+
+
+        }catch(SQLException | IOException ex){
+            String message = "Dogodila se greska kod dohvacanja pojedinog korisnika sa baze podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
+        return roleStrForLogging;
+    }
 }

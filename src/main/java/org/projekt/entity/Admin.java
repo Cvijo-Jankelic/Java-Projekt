@@ -26,4 +26,9 @@ public final class Admin extends AppUser implements AdminControls {
     public void removeUsersFromDataBase(List<AppUser> usersList) {
 
     }
+
+    @Override
+    public String toString() {
+        return super.getUsername();
+    }
 }

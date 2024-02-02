@@ -29,20 +29,20 @@
                     <Font size="18.0" />
                 </font>
             </Label>
-            <TextField fx:id="username" layoutX="217.0" layoutY="148.0" promptText="Username:" />
+            <TextField fx:id="usernameTextField" layoutX="217.0" layoutY="148.0" promptText="Username:" />
             <Button fx:id="loginButton" layoutX="252.0" layoutY="256.0" mnemonicParsing="false" onAction="#userLogIn" prefHeight="25.0" prefWidth="80.0" text="Login" />
-            <Label layoutX="217.0" layoutY="32.0" text="Banking Management System" textFill="#f8f6f6">
+            <Label layoutX="234.0" layoutY="29.0" text="Company Management" textFill="#f8f6f6">
                 <font>
                     <Font name="System Bold" size="24.0" />
                 </font>
             </Label>
-            <PasswordField fx:id="password" layoutX="217.0" layoutY="190.0" promptText="Password:" />
+            <PasswordField fx:id="passwordTextField" layoutX="217.0" layoutY="190.0" promptText="Password:" />
             <Label fx:id="wrongLogIn" layoutX="187.0" layoutY="106.0" textFill="#f5f0f0">
                 <font>
                     <Font name="System Italic" size="18.0" />
                 </font>
             </Label>
-            <Label fx:id="afterSuccessLogin" layoutX="318.0" layoutY="98.0" textFill="WHITE">
+            <Label layoutX="318.0" layoutY="98.0" textFill="WHITE">
                 <font>
                     <Font name="System Bold" size="24.0" />
                 </font>

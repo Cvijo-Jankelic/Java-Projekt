@@ -21,6 +21,8 @@ public class Main {
         List<Company> companies = new ArrayList<>();
         List<Ad> adList = new ArrayList<>();
 
+
+
         campaignList = DatabaseUtils.getCampaignsFromDataBase();
         appUsers = DatabaseUtils.getAppUsersFromDataBase();
         companies = DatabaseUtils.getCompaniesFromDataBase();

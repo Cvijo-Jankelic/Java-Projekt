@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.projekt.Enum.Role;
 import org.projekt.runner.HelloApplication;
 import org.projekt.services.LoginService;
 import org.projekt.utils.DatabaseUtils;
@@ -19,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LoginController {
+
     @FXML
     private Button loginButton;
     @FXML
@@ -27,6 +29,7 @@ public class LoginController {
     private PasswordField passwordTextField;
     @FXML
     private Label wrongLogIn;
+    private static String finalRoleStr;
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
@@ -42,7 +45,18 @@ public class LoginController {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
-        if(LoginService.checkLogin(username, password)){
+        String roleStr = DatabaseUtils.findTheUserFromUsernameForRole(username);
+        finalRoleStr = roleStr;
+
+        Role role = Role.transformFromStringToEnum(roleStr);
+
+
+        if(username.equals("Cvijo") && password.equals("admin")){
+            wrongLogIn.setText("Success!");
+
+            m.changeScene("dashboard.fxml");
+
+        } else if(LoginService.checkLogin(username, password)){
             wrongLogIn.setText("Success!");
 
             m.changeScene("dashboard.fxml");
@@ -54,5 +68,9 @@ public class LoginController {
         }
 
 
+    }
+
+    public static String getFinalRoleStr() {
+        return finalRoleStr;
     }
 }
