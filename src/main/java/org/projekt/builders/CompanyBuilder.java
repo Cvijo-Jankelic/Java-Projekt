@@ -1,15 +1,24 @@
 package org.projekt.builders;
 
+import org.projekt.entity.Campaign;
 import org.projekt.entity.Company;
+
+import java.util.List;
 
 public class CompanyBuilder {
     private Integer companyId;
     private String companyName;
     private String companyAddress;
     private String companyContact;
+    private List<Campaign> campaignList;
 
     public CompanyBuilder setCompanyId(Integer companyId) {
         this.companyId = companyId;
+        return this;
+    }
+
+    public CompanyBuilder setCompanyCampaign(List<Campaign> campaignList){
+        this.campaignList = campaignList;
         return this;
     }
 
@@ -29,6 +38,6 @@ public class CompanyBuilder {
     }
 
     public Company createCompany() {
-        return new Company(companyId, companyName, companyAddress, companyContact);
+        return new Company(companyId, companyName, companyAddress, companyContact, campaignList);
     }
 }

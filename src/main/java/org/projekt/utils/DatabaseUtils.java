@@ -17,12 +17,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class DatabaseUtils {
 
@@ -339,9 +337,9 @@ public class DatabaseUtils {
             System.out.println(message);
         }
     }
-    public static void removeUsersFromDataBase(String userToDelete) {
+    public static void removeUsersFromDataBase(AppUser userToDelete) {
         try(Connection connection = DatabaseUtils.connectionToDataBase()){
-            String userNameStr = userToDelete;
+            String userNameStr = userToDelete.getUsername();
             String sqlQuery = "DELETE FROM users where username = ?";
             PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
             pstmt.setString(1, userNameStr);
@@ -422,5 +420,29 @@ public class DatabaseUtils {
             System.out.println(message);
         }
         return roleStrForLogging;
+    }
+
+    public static void removeCompanyFromDataBase(Company companyToDelete) {
+        try(Connection connection = DatabaseUtils.connectionToDataBase()){
+            String companyName = companyToDelete.getCompanyName();
+            String sqlQuery = "DELETE FROM tvrtke where idtvrtke = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+            pstmt.setLong(1, companyToDelete.getCompanyId());
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Tvrtka " + companyName + " je obrisan.");
+            }else{
+                System.out.println("Tvrtka " + companyToDelete + " nije pronadjena u bazi podataka");
+            }
+
+
+        } catch (SQLException | IOException ex) {
+            String message = "Dogodila se greska kod brisanja korisnika sa baze podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
+
     }
 }
