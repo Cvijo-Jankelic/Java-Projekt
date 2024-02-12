@@ -1,4 +1,4 @@
-package org.projekt.controllers;
+package org.projekt.controllers.commonControllers;
 
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;

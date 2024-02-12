@@ -1,5 +1,6 @@
 package org.projekt.builders;
 
+import org.projekt.Enum.Status;
 import org.projekt.entity.Campaign;
 
 import java.math.BigDecimal;
@@ -9,7 +10,7 @@ public class CampaignBuilder {
     private Integer campaignId;
     private String name;
     private String description;
-    private String status;
+    private Status status;
     private LocalDate startDate;
     private LocalDate endDate;
     private BigDecimal budget;
@@ -34,7 +35,7 @@ public class CampaignBuilder {
         return this;
     }
 
-    public CampaignBuilder setStatus(String status) {
+    public CampaignBuilder setStatus(Status status) {
         this.status = status;
         return this;
     }

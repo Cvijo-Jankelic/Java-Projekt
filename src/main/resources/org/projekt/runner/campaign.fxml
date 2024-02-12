@@ -9,28 +9,28 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="699.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.projekt.controllers.CampaignController">
+<AnchorPane prefHeight="400.0" prefWidth="699.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.projekt.controllers.commonControllers.CampaignController">
     <fx:include source="menubar.fxml" />
    <AnchorPane layoutX="179.0" layoutY="50.0" prefHeight="348.0" prefWidth="519.0">
       <children>
          <Label layoutX="290.0" layoutY="20.0" text="Pretrazi kampanju:" />
-         <ComboBox layoutX="264.0" layoutY="72.0" prefWidth="150.0" />
-         <Button layoutX="313.0" layoutY="106.0" mnemonicParsing="false" text="Sreach" />
-         <TableView layoutX="20.0" layoutY="165.0" prefHeight="172.0" prefWidth="486.0">
+         <ComboBox fx:id="statusComboBox" layoutX="264.0" layoutY="72.0" prefWidth="150.0" />
+         <Button layoutX="313.0" layoutY="106.0" mnemonicParsing="false" onAction="#searchCampaign" text="Search" />
+         <TableView fx:id="campaignTableView" layoutX="20.0" layoutY="165.0" prefHeight="172.0" prefWidth="486.0">
            <columns>
-             <TableColumn text="Naziv:" />
-             <TableColumn prefWidth="79.0" text="Status:" />
-               <TableColumn text="Broj oglasa" />
-               <TableColumn prefWidth="70.0" text="Pocetak:" />
-               <TableColumn prefWidth="91.0" text="Kraj:" />
-               <TableColumn prefWidth="85.0" text="Tvrtka" />
+             <TableColumn fx:id="nameCampaignTableColumn" text="Naziv:" />
+             <TableColumn fx:id="statusTableColumn" prefWidth="79.0" text="Status:" />
+               <TableColumn fx:id="budgetCampaignTableColumn" text="Budget" />
+               <TableColumn fx:id="startDateTableColumn" prefWidth="70.0" text="Pocetak:" />
+               <TableColumn fx:id="endDateTableColumn" prefWidth="91.0" text="Kraj:" />
+               <TableColumn fx:id="companyTableColumn" prefWidth="85.0" text="Tvrtka" />
            </columns>
          </TableView>
          <Label layoutX="20.0" layoutY="135.0" text="Sortiraj tablicu po:" />
          <JFXComboBox layoutX="117.0" layoutY="131.0" />
          <Label layoutX="219.0" layoutY="76.0" text="Status:" />
          <Label layoutX="219.0" layoutY="46.0" text="Name:" />
-         <TextField layoutX="265.0" layoutY="42.0" />
+         <TextField fx:id="campaignNameTextField" layoutX="265.0" layoutY="42.0" />
       </children>
    </AnchorPane>
 

@@ -1,13 +1,16 @@
 package org.projekt.entity;
 
+import org.projekt.Enum.Status;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class Campaign {
     private Integer campaignId;
     private String name;
     private String description;
-    private String status; // indikator statusa kampanje off/on/pause
+    private Status status; // indikator statusa kampanje off/on/pause
     private LocalDate startDate;
     private LocalDate endDate;
     private BigDecimal budget;
@@ -17,7 +20,7 @@ public class Campaign {
     private Integer createdBy; // Id korisnika
     private Integer companyId;
 
-    public Campaign(Integer campaignId, String name, String description, String status,
+    public Campaign(Integer campaignId, String name, String description, Status status,
                     LocalDate startDate, LocalDate endDate, BigDecimal budget, String targetAudience, String channels,
                     BigDecimal roi, Integer createdBy, Integer companyId) {
 
@@ -59,11 +62,11 @@ public class Campaign {
         this.description = description;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -129,6 +132,11 @@ public class Campaign {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
 

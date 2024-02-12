@@ -14,8 +14,21 @@ module org.projekt.projekt {
 
     opens org.projekt.runner to javafx.fxml;
     exports org.projekt.runner;
-    opens org.projekt.controllers;
-    exports org.projekt.controllers;
+    exports org.projekt.controllers.adminControllers;
+    exports org.projekt.controllers.commonControllers;
+    exports org.projekt.builders;
+    exports org.projekt.entity;
+    exports org.projekt.utils;
+    exports org.projekt.exceptions;
+    exports org.projekt.generics;
+    exports org.projekt.interfaces;
+    exports org.projekt.main;
+    exports org.projekt.services;
+    exports org.projekt.sort;
+    exports org.projekt.threads;
+    exports org.projekt.Enum;
+    opens org.projekt.controllers.adminControllers;
+    opens org.projekt.controllers.commonControllers;
 
 
 }

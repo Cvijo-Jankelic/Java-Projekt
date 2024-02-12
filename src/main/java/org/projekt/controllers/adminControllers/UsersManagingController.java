@@ -1,4 +1,4 @@
-package org.projekt.controllers;
+package org.projekt.controllers.adminControllers;
 
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -44,6 +44,8 @@ public class UsersManagingController {
     private TableColumn<AppUser, String> usernameTableColumn;
     @FXML
     private TableColumn<AppUser, String> passwordTableColumn;
+    @FXML
+    private TableColumn<AppUser, String> roleTableColumn;
 
 
     public void initialize(){
@@ -58,6 +60,13 @@ public class UsersManagingController {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<AppUser, String> param) {
                 return new ReadOnlyStringWrapper(param.getValue().getPassword());
+            }
+        });
+
+        roleTableColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<AppUser, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<AppUser, String> param) {
+                return new ReadOnlyStringWrapper(param.getValue().getRole().toString());
             }
         });
 
@@ -148,7 +157,7 @@ public class UsersManagingController {
                     DatabaseUtils.saveUsersToDataBase(commonUser.get());
                     Platform.runLater(() -> {
                         ObservableList<AppUser> items = appUserTableView.getItems();
-                        items.add(commonUser.get()); // Dodajte korisnika bez upotrebe Optional
+                        items.add(commonUser.get());
                         // commonUserTableView.setItems(items); // Ovo je suvišno ako items već referencira listu unutar TableView-a
                     });
                 }

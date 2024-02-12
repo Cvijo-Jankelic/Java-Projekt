@@ -11,18 +11,19 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.projekt.controllers.UsersManagingController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.projekt.controllers.adminControllers.UsersManagingController">
     <children>
         <fx:include source="menubar.fxml" />
         <Label layoutX="212.0" layoutY="63.0" prefHeight="17.0" prefWidth="225.0" text="Odaberite korisnika kojeg zelite obrisati:" />
         <ComboBox fx:id="userComboBox" layoutX="247.0" layoutY="94.0" prefWidth="150.0" />
         <Button fx:id="deleteButton" layoutX="295.0" layoutY="139.0" mnemonicParsing="false" onAction="#deleteUser" text="Obrisi" />
-        <BorderPane layoutX="484.0" layoutY="90.0" prefHeight="308.0" prefWidth="206.0">
+        <BorderPane layoutX="465.0" layoutY="90.0" prefHeight="308.0" prefWidth="232.0">
             <center>
-                <TableView fx:id="appUserTableView" prefHeight="134.0" prefWidth="206.0" BorderPane.alignment="CENTER">
+                <TableView fx:id="appUserTableView" prefHeight="286.0" prefWidth="239.0" BorderPane.alignment="CENTER">
                     <columns>
-                        <TableColumn fx:id="usernameTableColumn" prefWidth="108.0" text="Username" />
-                        <TableColumn fx:id="passwordTableColumn" prefWidth="106.0" text="Password" />
+                        <TableColumn fx:id="usernameTableColumn" prefWidth="84.0" text="Username" />
+                        <TableColumn fx:id="passwordTableColumn" prefWidth="87.0" text="Password" />
+                  <TableColumn fx:id="roleTableColumn" prefWidth="64.0" text="Role" />
                     </columns>
                 </TableView>
             </center>

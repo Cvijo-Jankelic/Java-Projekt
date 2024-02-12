@@ -1,5 +1,6 @@
 package org.projekt.builders;
 
+import org.projekt.Enum.Status;
 import org.projekt.entity.Ad;
 
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ public class AdBuilder {
     private String name;
     private String content;
     private String type;
-    private String status;
+    private Status status;
     private String targetAudience;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
@@ -40,7 +41,7 @@ public class AdBuilder {
         return this;
     }
 
-    public AdBuilder setStatus(String status) {
+    public AdBuilder setStatus(Status status) {
         this.status = status;
         return this;
     }

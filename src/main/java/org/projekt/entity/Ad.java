@@ -1,5 +1,7 @@
 package org.projekt.entity;
 
+import org.projekt.Enum.Status;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -9,7 +11,7 @@ public class Ad {
     private String name;
     private String content;
     private String type;
-    private String status;
+    private Status status;
     private String targetAudience;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
@@ -18,7 +20,7 @@ public class Ad {
     private Long clicks;
     private Integer conversions; // Uspjesno provedena akcija kao rezultat oglasavanja
 
-    public Ad(Integer adID, String name, String content, String type, String status,
+    public Ad(Integer adID, String name, String content, String type, Status status,
               String targetAudience, LocalDateTime startDate, LocalDateTime endDate, Integer campaignId, Integer impressions,
               Long clicks, Integer conversions) {
         this.adID = adID;
@@ -67,11 +69,11 @@ public class Ad {
         this.type = type;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -129,5 +131,10 @@ public class Ad {
 
     public void setConversions(Integer conversions) {
         this.conversions = conversions;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

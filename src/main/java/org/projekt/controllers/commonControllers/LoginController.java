@@ -1,4 +1,4 @@
-package org.projekt.controllers;
+package org.projekt.controllers.commonControllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.projekt.Enum.Role;
+import org.projekt.entity.AppUser;
 import org.projekt.runner.HelloApplication;
 import org.projekt.services.LoginService;
 import org.projekt.utils.DatabaseUtils;
@@ -14,10 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class LoginController {
 
@@ -35,7 +32,9 @@ public class LoginController {
 
 
     public void userLogIn(ActionEvent event) throws IOException {
+
         checkLogin();
+
     }
 
     private void checkLogin() throws IOException {
@@ -66,7 +65,6 @@ public class LoginController {
         }else{
             wrongLogIn.setText("Wrong username or password!");
         }
-
 
     }
 

@@ -31,8 +31,6 @@ public class LoginService {
 
                 String hashedPassword = hashPassword(password);
 
-
-
                 if(storedHashedPassword.equals(hashedPassword)){
                     return true;
                 }

@@ -1,10 +1,8 @@
 package org.projekt.utils;
 
-import javafx.scene.control.DatePicker;
-import org.kordamp.ikonli.javafx.IkonResolver;
 import org.projekt.Enum.Role;
+import org.projekt.Enum.Status;
 import org.projekt.builders.*;
-import org.projekt.controllers.LoginController;
 import org.projekt.entity.*;
 import org.projekt.services.LoginService;
 import org.slf4j.Logger;
@@ -50,7 +48,7 @@ public class DatabaseUtils {
                 Integer campaignId = rs.getInt("campaignID");
                 String name = rs.getString("name");
                 String description = rs.getString("description");
-                String status = rs.getString("status");
+                Status status = Status.valueOf(rs.getString("status"));
                 LocalDate startDate = rs.getDate("startDate").toLocalDate();
                 LocalDate endDate = rs.getDate("endDate").toLocalDate();
                 BigDecimal budget = rs.getBigDecimal("budget");
@@ -87,7 +85,7 @@ public class DatabaseUtils {
                 String name = rs.getString("name");
                 String content = rs.getString("content");
                 String type = rs.getString("type");
-                String status = rs.getString("status");
+                Status status = Status.valueOf(rs.getString("status"));
                 String targetAudience = rs.getString("targetAudience");
                 Timestamp sqlStartDate = rs.getTimestamp("startDate");
                 Timestamp sqlEndDate = rs.getTimestamp("endDate");
@@ -255,7 +253,7 @@ public class DatabaseUtils {
             pstmt.setString(1, adToInsert.getName());
             pstmt.setString(2, adToInsert.getContent());
             pstmt.setString(3, adToInsert.getType());
-            pstmt.setString(4, adToInsert.getStatus());
+            pstmt.setString(4, adToInsert.getStatus().toString());
             pstmt.setString(5, adToInsert.getTargetAudience());
             pstmt.setTimestamp(6, startTimestamp);
             pstmt.setTimestamp(7, endTimestamp);
@@ -278,7 +276,7 @@ public class DatabaseUtils {
             PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
             pstmt.setString(1, campaignToInsert.getName());
             pstmt.setString(2, campaignToInsert.getDescription());
-            pstmt.setString(3, campaignToInsert.getStatus());
+            pstmt.setString(3, campaignToInsert.getStatus().toString());
             pstmt.setDate(4, java.sql.Date.valueOf(campaignToInsert.getStartDate()));
             pstmt.setDate(5, java.sql.Date.valueOf(campaignToInsert.getEndDate()));
             pstmt.setBigDecimal(6, campaignToInsert.getBudget());
@@ -321,7 +319,7 @@ public class DatabaseUtils {
             pstmt.setString(1, insertToAd.getName());
             pstmt.setString(2, insertToAd.getContent());
             pstmt.setString(3, insertToAd.getType());
-            pstmt.setString(4, insertToAd.getStatus());
+            pstmt.setString(4, insertToAd.getStatus().toString());
             pstmt.setString(5, insertToAd.getTargetAudience());
             pstmt.setDate(6, Date.valueOf(insertToAd.getStartDate().toString()));
             pstmt.setDate(7, Date.valueOf(insertToAd.getEndDate().toString()));
@@ -439,7 +437,53 @@ public class DatabaseUtils {
 
 
         } catch (SQLException | IOException ex) {
-            String message = "Dogodila se greska kod brisanja korisnika sa baze podataka!";
+            String message = "Dogodila se greska kod brisanja tvrtke sa baze podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
+
+    }
+
+    public static void removeCampaignFromDataBase(Campaign campaignToDelete) {
+        try(Connection connection = connectionToDataBase()){
+            String campaignName = campaignToDelete.getName();
+            String sqlQuery = "DELETE FROM campaign where campaignID  = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+            pstmt.setLong(1, campaignToDelete.getCampaignId());
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            if(rowsAffected > 0){
+                System.out.println("Kampanja " + campaignName + " je obrisana.");
+            }else{
+                System.out.println("Kampanja " + campaignToDelete + " nije pronadjena u bazi podataka");
+            }
+
+        }catch (SQLException | IOException ex) {
+            String message = "Dogodila se greska kod brisanja kampanje sa baze podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
+
+    }
+
+    public static void removeAdFromDataBase(Ad adToDelete) {
+        try(Connection connection = connectionToDataBase()){
+            String adName = adToDelete.getName();
+            String sqlQuery = "DELETE FROM ad where adID  = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+            pstmt.setLong(1, adToDelete.getAdID());
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            if(rowsAffected > 0){
+                System.out.println("Reklama " + adName + " je obrisana.");
+            }else{
+                System.out.println("Kampanja " + adToDelete + " nije pronadjena u bazi podataka");
+            }
+
+        }catch (SQLException | IOException ex) {
+            String message = "Dogodila se greska kod brisanja kampanje sa baze podataka!";
             logger.error(message, ex);
             System.out.println(message);
         }
