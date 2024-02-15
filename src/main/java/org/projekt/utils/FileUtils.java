@@ -1,10 +1,14 @@
 package org.projekt.utils;
 
+import org.projekt.entity.AppUser;
+import org.projekt.services.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +52,34 @@ public class FileUtils {
         } catch (IOException | ClassNotFoundException ex) {
             String msg = "Dogodila se greska kod deserijaliziranja podataka";
             logger.error(msg, ex);
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static void saveUserIntoTextFile(AppUser user){
+        File userFile = new File(usersFileName);
+        String password = null;
+
+        try{
+
+            password = LoginService.hashPassword(user.getPassword());
+
+        }catch (NoSuchAlgorithmException ex){
+            System.out.println("Dogodila se greska kod hashiranja lozinku u tekstulanu datoteku");
+            ex.printStackTrace();
+            logger.error(ex.getMessage());
+
+        }
+
+        try(PrintWriter pw = new PrintWriter(userFile)) {
+            pw.print(user.getUsername());
+            pw.print(", ");
+            pw.println(password);
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Dogodila se greska tokom zapisivnja korisnika unutar tekstualne datoteke");
+            ex.printStackTrace();
+            logger.error(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }

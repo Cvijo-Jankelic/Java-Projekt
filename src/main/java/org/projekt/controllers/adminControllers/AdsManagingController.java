@@ -38,6 +38,7 @@ public class AdsManagingController {
     @FXML
     private ComboBox<Ad> adDeleteComboBox;
 
+    private final String adsDat = "serializedDat/adsSerialized.ser";
 
     public void initialize(){
 

@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.projekt.controllers.adminControllers.CompanyManagingController">
     <fx:include source="menuBarAdmin.fxml" />
-   <Button layoutX="531.0" layoutY="66.0" mnemonicParsing="false" text="Update" />
+   <Button fx:id="updateCompany" layoutX="531.0" layoutY="99.0" mnemonicParsing="false" onAction="#updateCompany" text="Update" />
    <Label layoutX="480.0" layoutY="49.0" text="Azuriraj postojece kompanije:" />
    <Label layoutX="272.0" layoutY="49.0" text="Dodaj tvrtku:" />
    <TextField fx:id="companyNameTextField" layoutX="232.0" layoutY="79.0" promptText="Naziv tvrtke:" />
@@ -28,5 +28,6 @@
      </columns>
    </TableView>
    <Label layoutX="483.0" layoutY="151.0" text="Lista trenutno aktivnih tvrtki:" />
+   <ComboBox fx:id="updateCompanyComboBox" layoutX="484.0" layoutY="67.0" prefWidth="150.0" />
 
 </AnchorPane>

@@ -126,12 +126,14 @@ public class DatabaseUtils {
 
     }
 
-    public static List<AppUser> getAppUsersFromDataBase(){
-        List<AppUser> appUsersList = new ArrayList<>();
+    public static AppUser getCurrentAppUserFromDataBase(String findUserFromUsername){
+        AppUser currentAppUser = null;
 
         try(Connection connection = connectionToDataBase()) {
-            String sqlQuery = "SELECT * FROM users";
+            String sqlQuery = "SELECT * FROM users WHERE username = ?";
             PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+            pstmt.setString(1, findUserFromUsername);
+
             ResultSet rs = pstmt.executeQuery();
 
             while(rs.next()){
@@ -150,7 +152,8 @@ public class DatabaseUtils {
                                 .setRole(role)
                                 .setCreatedAt(created_at)
                                 .createAdmin();
-                        appUsersList.add(adminUser);
+
+                        currentAppUser = adminUser;
                     }else if(role == Role.COMMON){
                         AppUser commonUser = new CommonUserBuilder()
                                 .setId(userId)
@@ -159,7 +162,8 @@ public class DatabaseUtils {
                                 .setRole(role)
                                 .setCreatedAt(created_at)
                                 .createCommonUser();
-                        appUsersList.add(commonUser);
+
+                        currentAppUser = commonUser;
                     }else{
                         throw new IllegalArgumentException("Unknown role: " + roleStr);
                     }
@@ -170,6 +174,59 @@ public class DatabaseUtils {
                 }
 
             }
+
+        } catch (SQLException | IOException ex) {
+            String message = "Dogodila se greska kod dohvacanja korisnika sa baze podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
+        return currentAppUser;
+    }
+
+    public static List<AppUser> getAppUsersFromDataBase(){
+        List<AppUser> appUsersList = new ArrayList<>();
+
+        try(Connection connection = connectionToDataBase()) {
+                String sqlQuery = "SELECT * FROM users";
+                PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+                ResultSet rs = pstmt.executeQuery();
+
+                while(rs.next()){
+                    Integer userId = rs.getInt("id");
+                    String username = rs.getString("username");
+                    String password = rs.getString("password");
+                    String roleStr = rs.getString("role");
+                    Role role = Role.transformFromStringToEnum(roleStr);
+                    LocalDateTime created_at = rs.getObject("created_at", LocalDateTime.class);
+                    try{
+                        if(role == Role.ADMIN){
+                            AppUser adminUser = new AdminBuilder()
+                                    .setId(userId)
+                                    .setUsername(username)
+                                    .setPassword(password)
+                                    .setRole(role)
+                                    .setCreatedAt(created_at)
+                                    .createAdmin();
+                            appUsersList.add(adminUser);
+                        }else if(role == Role.COMMON){
+                            AppUser commonUser = new CommonUserBuilder()
+                                    .setId(userId)
+                                    .setUsername(username)
+                                    .setPassword(password)
+                                    .setRole(role)
+                                    .setCreatedAt(created_at)
+                                    .createCommonUser();
+                            appUsersList.add(commonUser);
+                        }else{
+                            throw new IllegalArgumentException("Unknown role: " + roleStr);
+                        }
+                    }catch (IllegalArgumentException ex){
+                        logger.info("Pogreska " + ex.getMessage(), ex);
+                        logger.trace(ex.getMessage(), ex);
+                        // jos doraditi malo
+                    }
+
+                }
 
         } catch (SQLException | IOException ex) {
             String message = "Dogodila se greska kod dohvacanja korisnika sa baze podataka!";
@@ -270,21 +327,30 @@ public class DatabaseUtils {
 
     public static void saveCampaignToDataBase(Campaign campaignToInsert){
 
+
         try(Connection connection = connectionToDataBase()){
-            String sqlQuery = "INSERT INTO campaign(name, description, status, startDate, endDate, budget, targetAudience, channels, createdBy, tvrtkaId) " +
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+            Integer lastId = DatabaseUtils.getNextIdCampaign();
+
+            campaignToInsert.setCampaignId(lastId);
+
+            String sqlQuery = "INSERT INTO campaign(campaignID, name, description, status, startDate, endDate, budget, targetAudience, channels, createdBy, tvrtkaId) " +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
-            pstmt.setString(1, campaignToInsert.getName());
-            pstmt.setString(2, campaignToInsert.getDescription());
-            pstmt.setString(3, campaignToInsert.getStatus().toString());
-            pstmt.setDate(4, java.sql.Date.valueOf(campaignToInsert.getStartDate()));
-            pstmt.setDate(5, java.sql.Date.valueOf(campaignToInsert.getEndDate()));
-            pstmt.setBigDecimal(6, campaignToInsert.getBudget());
-            pstmt.setString(7, campaignToInsert.getTargetAudience());
-            pstmt.setString(8, campaignToInsert.getChannels());
-            pstmt.setInt(9, campaignToInsert.getCreatedBy());
-            pstmt.setInt(10, campaignToInsert.getCompanyId());
+            pstmt.setInt(1, lastId);
+            pstmt.setString(2, campaignToInsert.getName());
+            pstmt.setString(3, campaignToInsert.getDescription());
+            pstmt.setString(4, campaignToInsert.getStatus().toString());
+            pstmt.setDate(5, java.sql.Date.valueOf(campaignToInsert.getStartDate()));
+            pstmt.setDate(6, java.sql.Date.valueOf(campaignToInsert.getEndDate()));
+            pstmt.setBigDecimal(7, campaignToInsert.getBudget());
+            pstmt.setString(8, campaignToInsert.getTargetAudience());
+            pstmt.setString(9, campaignToInsert.getChannels());
+            pstmt.setInt(10, campaignToInsert.getCreatedBy());
+            pstmt.setInt(11, campaignToInsert.getCompanyId());
             pstmt.execute();
+
+            addingAdsIntoCompanyDatabase(campaignToInsert, connection);
 
 
         }catch (SQLException | IOException ex) {
@@ -292,6 +358,31 @@ public class DatabaseUtils {
             logger.error(message, ex);
             System.out.println(message);
         }
+    }
+
+    private static void addingAdsIntoCompanyDatabase(Campaign campaignToInsert, Connection connection) throws SQLException {
+        String sqlCheck = "SELECT campaignsId FROM tvrtke WHERE idtvrtke = ?";
+        PreparedStatement pstmtCheck = connection.prepareStatement(sqlCheck);
+        pstmtCheck.setInt(1, campaignToInsert.getCompanyId());
+        ResultSet rsCheck = pstmtCheck.executeQuery();
+
+        String currentCampaignsId = null;
+        if (rsCheck.next()) {
+            currentCampaignsId = rsCheck.getString("campaignsId");
+        }
+        rsCheck.close();
+        pstmtCheck.close(); // Zatvaranje resursa nakon upotrebe
+
+        String newCampaignsId = currentCampaignsId == null || currentCampaignsId.isEmpty() ?
+                String.valueOf(campaignToInsert.getCampaignId()) : // Ako ne postoji, samo dodaj ID
+                currentCampaignsId + "," + campaignToInsert.getCampaignId(); // Ako postoji, dodaj zarez i ID
+
+        String sqlUpdateCompany = "UPDATE tvrtke SET campaignsId = ? WHERE idtvrtke = ?";
+        PreparedStatement pstmtUpdate = connection.prepareStatement(sqlUpdateCompany);
+        pstmtUpdate.setString(1, newCampaignsId);
+        pstmtUpdate.setInt(2, campaignToInsert.getCompanyId());
+        pstmtUpdate.executeUpdate(); // Ispravno izvršavanje ažuriranja
+        pstmtUpdate.close(); // Zatvaranje resursa nakon upotrebe
     }
 
     public static void saveCompanyToDataBase(Company companyToInsert){
@@ -420,10 +511,55 @@ public class DatabaseUtils {
         return roleStrForLogging;
     }
 
+    public static Campaign findCampaignFromDataBase(String campaignName){
+        Campaign newCampaign = null;
+        String sqlQuery = "SELECT * FROM campaign WHERE name = ?";
+        try(Connection connection = connectionToDataBase()){
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+
+            pstmt.setString(1, campaignName);
+            ResultSet rs = pstmt.executeQuery();
+
+            while(rs.next()){
+
+                Integer campaignId = rs.getInt("campaignID");
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                Status status = Status.valueOf(rs.getString("status"));
+                LocalDate startDate = rs.getDate("startDate").toLocalDate();
+                LocalDate endDate = rs.getDate("endDate").toLocalDate();
+                BigDecimal budget = rs.getBigDecimal("budget");
+                String targetAudience = rs.getString("targetAudience");
+                String channels = rs.getString("channels");
+                BigDecimal roi = rs.getBigDecimal("ROI");
+                Integer createdByID = rs.getInt("createdBy");
+                Integer companyId = rs.getInt("tvrtkaId");
+
+                 newCampaign = new CampaignBuilder().setCampaignId(campaignId).setName(name).setDescription(description).setStatus(status).setStartDate(startDate).setEndDate(endDate).setBudget(budget).setTargetAudience(targetAudience).setChannels(channels).setRoi(roi).setCreatedBy(createdByID).setCompanyId(companyId).createCampaign();
+
+            }
+
+
+        }
+        catch(SQLException | IOException ex){
+            String message = "Dogodila se greska kod dohvacanja pojedine kampanje sa baze podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
+
+        return newCampaign;
+    }
+
     public static void removeCompanyFromDataBase(Company companyToDelete) {
         try(Connection connection = DatabaseUtils.connectionToDataBase()){
             String companyName = companyToDelete.getCompanyName();
             String sqlQuery = "DELETE FROM tvrtke where idtvrtke = ?";
+            String updateCampaigns = "UPDATE campaign SET tvrtkaId = NULL WHERE tvrtkaId = ?";
+            PreparedStatement updatePstmt = connection.prepareStatement(updateCampaigns);
+
+            updatePstmt.setInt(1, companyToDelete.getCompanyId());
+            updatePstmt.execute();
+
             PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
             pstmt.setLong(1, companyToDelete.getCompanyId());
 
@@ -484,6 +620,76 @@ public class DatabaseUtils {
 
         }catch (SQLException | IOException ex) {
             String message = "Dogodila se greska kod brisanja kampanje sa baze podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
+
+    }
+
+    public static Integer getNextIdCampaign() {
+        List<Campaign> campaignList = DatabaseUtils.getCampaignsFromDataBase();
+
+        Integer lastId = campaignList.stream()
+                .map(Campaign::getCampaignId)
+                .max(Integer::compareTo)
+                .orElse(0);
+
+        return lastId + 1;
+    }
+
+    public static void updateCampaignIntoDatabase(Campaign campaignToUpdate) {
+        try(Connection connection = connectionToDataBase()) {
+            String sqlQuery = "UPDATE campaign SET name = ?, description = ?, status = ?, startDate = ?, endDate = ?, budget = ?, targetAudience = ?, channels = ?, createdBy = ?, tvrtkaId = ? WHERE campaignID = ?;";
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+
+            pstmt.setString(1, campaignToUpdate.getName());
+            pstmt.setString(2, campaignToUpdate.getDescription());
+            pstmt.setString(3, campaignToUpdate.getStatus().toString());
+            pstmt.setDate(4, java.sql.Date.valueOf(campaignToUpdate.getStartDate()));
+            pstmt.setDate(5, java.sql.Date.valueOf(campaignToUpdate.getEndDate()));
+            pstmt.setBigDecimal(6, campaignToUpdate.getBudget());
+            pstmt.setString(7, campaignToUpdate.getTargetAudience());
+            pstmt.setString(8, campaignToUpdate.getChannels());
+            pstmt.setInt(9, campaignToUpdate.getCreatedBy());
+            pstmt.setInt(10, campaignToUpdate.getCompanyId());
+            pstmt.setInt(11, campaignToUpdate.getCampaignId());
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Ažuriranje kampanje nije uspjelo, nijedan red nije ažuriran.");
+            }else{
+                String msg = "Uspjesno ste azurirali kampanju!";
+                System.out.println(msg);
+            }
+
+        } catch (SQLException | IOException ex) {
+            String message = "Dogodila se greška kod ažuriranja kampanje u bazi podataka!";
+            logger.error(message, ex);
+            System.out.println(message);
+        }
+
+    }
+
+    public static void updateCompanyIntoDataBase(Company selectedCompany) {
+        try(Connection connection = connectionToDataBase()) {
+            String sqlQuery = "UPDATE tvrtke SET nazivTvrtke = ?, adresaTvrtke = ?, kontaktInformacije = ? WHERE idtvrtke = ?;";
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+
+            pstmt.setString(1, selectedCompany.getCompanyName());
+            pstmt.setString(2, selectedCompany.getCompanyAddress());
+            pstmt.setString(3, selectedCompany.getCompanyContact());
+            pstmt.setInt(4, selectedCompany.getCompanyId());
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Ažuriranje tvrtke nije uspjelo, nijedan red nije ažuriran.");
+            }else{
+                String msg = "Uspjesno ste azurirali tvrtku!";
+                System.out.println(msg);
+            }
+
+        } catch (SQLException | IOException ex) {
+            String message = "Dogodila se greška kod ažuriranja tvrtke u bazi podataka!";
             logger.error(message, ex);
             System.out.println(message);
         }

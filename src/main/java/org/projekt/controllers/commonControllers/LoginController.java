@@ -8,8 +8,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.projekt.Enum.Role;
 import org.projekt.entity.AppUser;
+import org.projekt.records.SessionUser;
 import org.projekt.runner.HelloApplication;
 import org.projekt.services.LoginService;
+import org.projekt.services.Session;
 import org.projekt.utils.DatabaseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,7 @@ public class LoginController {
     private static String finalRoleStr;
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private static AppUser currentUser = null;
 
 
     public void userLogIn(ActionEvent event) throws IOException {
@@ -49,24 +52,45 @@ public class LoginController {
 
         Role role = Role.transformFromStringToEnum(roleStr);
 
+        currentUser = DatabaseUtils.getCurrentAppUserFromDataBase(username);
+        SessionUser currenSessionUserRecord = new SessionUser(currentUser);
+        Session.setCurrentUser(currentUser);
 
-        if(username.equals("Cvijo") && password.equals("admin")){
-            wrongLogIn.setText("Success!");
+        try {
 
-            m.changeScene("dashboard.fxml");
 
-        } else if(LoginService.checkLogin(username, password)){
-            wrongLogIn.setText("Success!");
+            if (username.equals("Cvijo") && password.equals("admin")) {
+                wrongLogIn.setText("Success!");
 
-            m.changeScene("dashboard.fxml");
-        }else if(usernameTextField.toString().isEmpty() || passwordTextField.toString().isEmpty()){
-            wrongLogIn.setText("Please enter your credentials.");
+                AppUser currentUser = Session.getCurrentUser();
 
-        }else{
-            wrongLogIn.setText("Wrong username or password!");
+
+                m.changeScene("dashboard.fxml");
+
+            } else if (LoginService.checkLogin(username, password)) {
+                wrongLogIn.setText("Success!");
+
+                m.changeScene("dashboard.fxml");
+            } else if (usernameTextField.toString().isEmpty() || passwordTextField.toString().isEmpty()) {
+                wrongLogIn.setText("Please enter your credentials.");
+
+            } else {
+                wrongLogIn.setText("Wrong username or password!");
+            }
+        }catch (IOException ex){
+            String msg = "Doslo je do pogreske tokom mijenjanja scene poslije prijave";
+            System.out.printf(msg);
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+
         }
 
     }
+
+    public static AppUser getCurrentUser() {
+        return currentUser;
+    }
+
 
     public static String getFinalRoleStr() {
         return finalRoleStr;

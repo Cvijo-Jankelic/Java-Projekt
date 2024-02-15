@@ -13,7 +13,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.projekt.controllers.adminControllers.UsersManagingController">
     <children>
-        <fx:include source="menubar.fxml" />
+        <fx:include source="menuBarAdmin.fxml" />
         <Label layoutX="212.0" layoutY="63.0" prefHeight="17.0" prefWidth="225.0" text="Odaberite korisnika kojeg zelite obrisati:" />
         <ComboBox fx:id="userComboBox" layoutX="247.0" layoutY="94.0" prefWidth="150.0" />
         <Button fx:id="deleteButton" layoutX="295.0" layoutY="139.0" mnemonicParsing="false" onAction="#deleteUser" text="Obrisi" />
@@ -47,6 +47,7 @@
       <Line endX="100.0" layoutX="319.0" layoutY="80.0" startX="-100.0" />
       <Line endX="53.0" layoutX="322.0" layoutY="217.0" startX="-48.0" />
       <Line endX="84.0" layoutX="538.0" layoutY="81.0" startX="-46.0" />
+      <Label fx:id="wrongUserNameLabel" layoutX="256.0" layoutY="177.0" />
     </children>
 
 </AnchorPane>

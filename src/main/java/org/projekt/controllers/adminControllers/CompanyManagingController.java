@@ -12,9 +12,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 import org.projekt.builders.CompanyBuilder;
+import org.projekt.entity.Campaign;
 import org.projekt.entity.Company;
 import org.projekt.runner.HelloApplication;
 import org.projekt.utils.DatabaseUtils;
+import org.projekt.utils.Promjene;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,6 +32,8 @@ public class CompanyManagingController {
     @FXML
     private ComboBox<Company> deleteCompanyComboBox;
     @FXML
+    private ComboBox<Company> updateCompanyComboBox;
+    @FXML
     private TableView<Company> listCompanyDetails;
     @FXML
     private TableColumn<Company, String> companyNameTableColumn;
@@ -37,6 +41,7 @@ public class CompanyManagingController {
     private TableColumn<Company, String> companyAddressTableColumn;
     @FXML
     private TableColumn<Company, String> companyEmailTableColumn;
+    private final String companyDat = "serializedDat/companySerialized.ser";
 
 
     public void initialize(){
@@ -66,6 +71,18 @@ public class CompanyManagingController {
         listCompanyDetails.setItems(companyObservableList);
 
         deleteCompanyComboBox.setItems(companyObservableList);
+
+
+        Platform.runLater(()->{
+            updateCompanyComboBox.setItems(companyObservableList);
+        });
+
+        listCompanyDetails.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                fillFormWithCompanyData(newSelection);
+            }
+        });
+
 
     }
 
@@ -151,20 +168,46 @@ public class CompanyManagingController {
 
     }
 
-    public void showUpdateCompanyScreen(){
+    public void updateCompany(){
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("updateCompanyScreen.fxml"));
-        try{
-            Scene scene = new Scene(fxmlLoader.load(), 700, 400);
-            HelloApplication.getMainStage().setTitle("Update company");
-            HelloApplication.getMainStage().setScene(scene);
-            HelloApplication.getMainStage().show();
+        Company selectedCompany = updateCompanyComboBox.getSelectionModel().getSelectedItem();
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+
+        String newName = companyNameTextField.getText();
+        String newAddress = addressTextField.getText();
+        String newEmailAddress = emailTextField.getText();
+
+        selectedCompany.setCompanyName(newName);
+        selectedCompany.setCompanyAddress(newAddress);
+        selectedCompany.setCompanyContact(newEmailAddress);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+
+        alert.setTitle("Potvrda azuriranja");
+        alert.setHeaderText("Azuriranje kampanje");
+        alert.setContentText("Jeste li sigurni da želite azurirati ovu kampanju?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+
+        if(result.isPresent() && result.get() == ButtonType.OK){
+            DatabaseUtils.updateCompanyIntoDataBase(selectedCompany);
+
+            Platform.runLater(()->{
+                listCompanyDetails.refresh();
+            });
         }
+
+        Company newCompany = new CompanyBuilder().setCompanyName(newName).setCompanyAddress(newAddress).setCompanyContact(newEmailAddress).createCompany();
+        Promjene.serializeObjects(selectedCompany, newCompany, companyDat);
+
+
     }
 
+    private void fillFormWithCompanyData (Company company){
+        companyNameTextField.setText(company.getCompanyName());
+        addressTextField.setText(company.getCompanyAddress());
+        emailTextField.setText(company.getCompanyContact());
 
+    }
 
 }

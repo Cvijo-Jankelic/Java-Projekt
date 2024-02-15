@@ -5,6 +5,7 @@ import org.projekt.entity.AppUser;
 import org.projekt.entity.Campaign;
 import org.projekt.entity.Company;
 import org.projekt.utils.DatabaseUtils;
+import org.projekt.utils.Promjene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +28,10 @@ public class Main {
         appUsers = DatabaseUtils.getAppUsersFromDataBase();
         companies = DatabaseUtils.getCompaniesFromDataBase();
         adList = DatabaseUtils.getAdsFromDataBase();
+
+        List<Campaign> campaigns = Promjene.deserijalizirajKampanje();
+
+        System.out.println("Vristanje");
 
 
     }

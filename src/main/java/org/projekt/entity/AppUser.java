@@ -2,10 +2,11 @@ package org.projekt.entity;
 
 import org.projekt.Enum.Role;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-public abstract class AppUser {
+public abstract class AppUser implements Serializable {
     private Integer id;
     private String username;
     private String password;

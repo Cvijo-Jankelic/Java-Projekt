@@ -27,6 +27,7 @@ module org.projekt.projekt {
     exports org.projekt.sort;
     exports org.projekt.threads;
     exports org.projekt.Enum;
+    exports org.projekt.records;
     opens org.projekt.controllers.adminControllers;
     opens org.projekt.controllers.commonControllers;
 

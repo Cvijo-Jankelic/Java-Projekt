@@ -1,5 +1,6 @@
 package org.projekt.controllers.commonControllers;
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -10,11 +11,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import org.projekt.Enum.Role;
 import org.projekt.Enum.Status;
+import org.projekt.entity.AppUser;
 import org.projekt.entity.Campaign;
 import org.projekt.entity.Company;
 import org.projekt.services.FindCompanyByIdForCampaign;
+import org.projekt.services.Session;
 import org.projekt.utils.DatabaseUtils;
 
 import java.util.List;
@@ -40,9 +45,15 @@ public class CampaignController {
     private TableColumn<Campaign, String> endDateTableColumn;
     @FXML
     private TableColumn<Campaign, String> companyTableColumn;
+    @FXML
+    private AnchorPane menuBarCommonContainer;
+    @FXML
+    private AnchorPane menuBarAdminContainer;
 
 
+    @FXML
     public void initialize(){
+        updateMenuBarVisibility();
         nameCampaignTableColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Campaign, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Campaign, String> param) {
@@ -78,8 +89,8 @@ public class CampaignController {
         companyTableColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Campaign, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Campaign, String> param) {
-                Optional<Company> company = FindCompanyByIdForCampaign.findCompanyByCampaignId(param.getValue().getCampaignId());
-                    return new ReadOnlyStringWrapper(company.get().getCompanyName());
+                Optional<Company> company = FindCompanyByIdForCampaign.findCompanyByCampaignId(param.getValue().getCompanyId());
+                    return new ReadOnlyStringWrapper(company.map(Company::getCompanyName).orElse("Nepoznato"));
             }
         });
 
@@ -103,14 +114,27 @@ public class CampaignController {
         Status status = statusComboBox.getValue();
 
         List<Campaign> filteredList = campaignList.stream()
-                .filter(campaign -> campaign.getName().contains(campaignName))
-                .filter(campaign -> campaign.getStatus() == status)
+                .filter(campaign -> campaignName == null || campaign.getName().contains(campaignName))
+                .filter(campaign -> status == null || campaign.getStatus() == status)
                 .collect(Collectors.toList());
 
         ObservableList<Campaign> campaignObservableList = FXCollections.observableArrayList(filteredList);
-        campaignTableView.setItems(campaignObservableList);
+
+        Platform.runLater(()->{
+            campaignTableView.setItems(campaignObservableList);
+        });
 
 
+    }
+    private void updateMenuBarVisibility() {
+        AppUser currentUser = Session.getCurrentUser();
+        if (currentUser != null) {
+            boolean isAdmin = currentUser.getRole() == Role.ADMIN;
+            menuBarAdminContainer.setVisible(isAdmin);
+            menuBarAdminContainer.setManaged(isAdmin);
+            menuBarCommonContainer.setVisible(!isAdmin);
+            menuBarCommonContainer.setManaged(!isAdmin);
+        }
     }
 
 }

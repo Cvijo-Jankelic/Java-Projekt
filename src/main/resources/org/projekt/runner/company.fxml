@@ -1,13 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.projekt.controllers.commonControllers.CompanyController" prefHeight="400.0" prefWidth="600.0">
-
-    <fx:include source="menubar.fxml"/>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.projekt.controllers.commonControllers.CompanyController">
+    <AnchorPane fx:id="menuBarCommonContainer"><fx:include source="menubar.fxml"/></AnchorPane>
+    <AnchorPane fx:id="menuBarAdminContainer"><fx:include source="menuBarAdmin.fxml"/></AnchorPane>
+    <BorderPane layoutX="177.0" layoutY="49.0" prefHeight="351.0" prefWidth="523.0">
+      <bottom>
+         <TableView fx:id="companyTableView" prefHeight="137.0" prefWidth="517.0" BorderPane.alignment="CENTER">
+           <columns>
+             <TableColumn fx:id="companyNameTableColumn" prefWidth="117.0" text="Naziv" />
+             <TableColumn fx:id="companyAddressTableColumn" prefWidth="111.0" text="Adresa" />
+               <TableColumn fx:id="companyContactTableColumn" prefWidth="119.0" text="Kontakt" />
+               <TableColumn fx:id="companyCampaignsTableColumn" prefWidth="178.0" text="Kampanje" />
+           </columns>
+         </TableView>
+      </bottom>
+      <center>
+         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+               <Label layoutX="115.0" layoutY="99.0" text="Naziv tvrtke:" />
+               <TextField fx:id="companyNameTextField" layoutX="192.0" layoutY="95.0" />
+               <Label layoutX="140.0" layoutY="14.0" text="Pretrazivanje tvornica">
+                  <font>
+                     <Font name="System Bold" size="24.0" />
+                  </font>
+               </Label>
+               <Button layoutX="241.0" layoutY="166.0" mnemonicParsing="false" onAction="#searchCompany" text="Search" />
+               <Label layoutX="126.0" layoutY="134.0" text="Adresa:" />
+               <TextField fx:id="companyAddressTextField" layoutX="192.0" layoutY="130.0" />
+            </children>
+         </AnchorPane>
+      </center>
+   </BorderPane>
 
 </AnchorPane>

@@ -2,11 +2,12 @@ package org.projekt.entity;
 
 import org.projekt.Enum.Status;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class Campaign {
+public class Campaign implements Serializable {
     private Integer campaignId;
     private String name;
     private String description;

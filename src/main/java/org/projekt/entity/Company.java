@@ -1,8 +1,9 @@
 package org.projekt.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Company {
+public class Company implements Serializable {
     private Integer companyId;
     private String companyName;
     private String companyAddress;

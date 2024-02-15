@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.projekt.controllers.adminControllers.CampaignManagingController">
     <children>
-        <fx:include source="menubar.fxml" />
+        <fx:include source="menuBarAdmin.fxml" />
       <Label layoutX="219.0" layoutY="53.0" text="Dodaj kampanju:" />
       <TextField fx:id="campaignNameTextField" layoutX="188.0" layoutY="76.0" promptText="Name:" />
       <TextField fx:id="campaignDescriptionTextField" layoutX="188.0" layoutY="109.0" promptText="Description:" />
@@ -26,7 +26,7 @@
       <Label layoutX="432.0" layoutY="80.0" text="Izbrisi kampanju:" />
       <ComboBox fx:id="deleteCampaignComboBox" layoutX="425.0" layoutY="101.0" prefHeight="25.0" prefWidth="104.0" />
       <Label layoutX="570.0" layoutY="80.0" text="Azuriraj kampanju:" />
-      <Button layoutX="598.0" layoutY="135.0" mnemonicParsing="false" text="Update" />
+      <Button layoutX="598.0" layoutY="135.0" mnemonicParsing="false" onAction="#updateCampaign" text="Update" />
       <Button layoutX="452.0" layoutY="135.0" mnemonicParsing="false" onAction="#deleteCampaign" text="Delete" />
       <TableView fx:id="campaignTableView" layoutX="361.0" layoutY="269.0" prefHeight="126.0" prefWidth="336.0">
         <columns>
@@ -37,5 +37,6 @@
         </columns>
       </TableView>
       <ComboBox fx:id="companyComboBox" layoutX="189.0" layoutY="343.0" prefWidth="150.0" promptText="Company" />
+      <ComboBox fx:id="updateCampaignComboBox" layoutX="568.0" layoutY="101.0" prefHeight="25.0" prefWidth="104.0" />
     </children>
 </AnchorPane>

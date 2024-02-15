@@ -9,3 +9,15 @@
     -fx-border-width: 0px 0px 0px 3px;
 
 }
+
+.dashboard-title {
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-font-size: 22px;
+    -fx-text-fill: #f3b206;
+    transition: color 0.5s ease-in-out;
+}
+
+.dashboard-title:hover {
+    -fx-text-fill: #2196F3; /* Plava boja za hover efekt */
+}
+

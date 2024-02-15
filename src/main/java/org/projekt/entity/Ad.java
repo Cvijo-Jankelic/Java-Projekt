@@ -2,11 +2,12 @@ package org.projekt.entity;
 
 import org.projekt.Enum.Status;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class Ad {
+public class Ad implements Serializable {
     private Integer adID;
     private String name;
     private String content;
@@ -132,6 +133,7 @@ public class Ad {
     public void setConversions(Integer conversions) {
         this.conversions = conversions;
     }
+
 
     @Override
     public String toString() {
