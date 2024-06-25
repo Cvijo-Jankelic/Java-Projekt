@@ -13,6 +13,7 @@ import org.projekt.builders.AdminBuilder;
 import org.projekt.builders.CommonUserBuilder;
 import org.projekt.controllers.commonControllers.LoginController;
 import org.projekt.entity.AppUser;
+import org.projekt.exceptions.NotAllowedNumberInThisSection;
 import org.projekt.exceptions.SameNameException;
 import org.projekt.runner.HelloApplication;
 import org.projekt.services.LoginService;
@@ -52,9 +53,17 @@ public class RegisterPageController {
         boolean provjera = false;
 
         try{
+            if (username.matches(".*\\d.*")) {
+                throw new NotAllowedNumberInThisSection("Korisničko ime ne smije sadržavati brojeve.");
+            }
+
             LoginService.registerUser(username);
         }catch (SameNameException | IOException | SQLException ex){
             provjera = true;
+            logger.error(ex.getMessage());
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }catch (NotAllowedNumberInThisSection ex){
             logger.error(ex.getMessage());
             System.out.println(ex.getMessage());
             ex.printStackTrace();

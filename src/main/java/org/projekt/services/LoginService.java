@@ -1,5 +1,6 @@
 package org.projekt.services;
 
+import org.projekt.exceptions.LoginFailedException;
 import org.projekt.exceptions.SameNameException;
 import org.projekt.utils.DatabaseUtils;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ public class LoginService {
     private static final String DATABASE_FILE = "database-properties/database.properties";
     private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
 
-    public static boolean checkLogin(String username, String password){
+    public static boolean checkLogin(String username, String password) throws LoginFailedException{
 
         try(Connection connection = DatabaseUtils.connectionToDataBase()){
             String sqlQuery = "SELECT password FROM users WHERE username = ?";
@@ -34,6 +35,8 @@ public class LoginService {
 
                 if(storedHashedPassword.equals(hashedPassword)){
                     return true;
+                }else{
+                    throw new LoginFailedException("Neispravna lozinka");
                 }
 
             }

@@ -15,7 +15,7 @@ public class Promjene implements Serializable {
     private final String novaVrijednost;
     private final LocalDateTime datumPromjene;
     Role role = Session.getCurrentUser().getRole();
-    private static final String campaignDat = "serializedDat/campaignSerialized.ser";
+    private static final String campaignDat = "serializedDat/campaignSerialized.dat";
     private final String adsDat = "serializedDat/adsSerialized.ser";
     private final String companyDat = "serializedDat/companySerialized.ser";
     private final String userDat = "serializedDat/userSerialized.ser";

@@ -1,6 +1,7 @@
 package org.projekt.sort;
 
 import org.projekt.entity.Campaign;
+import org.projekt.exceptions.CampaignNotFoundException;
 import org.projekt.utils.DatabaseUtils;
 
 import java.util.Comparator;
@@ -14,6 +15,10 @@ public class TopBudgetSort {
 
         Optional<Campaign> topCampaign = topCampaign().stream()
                 .max(Comparator.comparing(Campaign::getBudget));
+
+        if(topCampaign().isEmpty()){
+            throw new CampaignNotFoundException("Nije pronadjena najvrijednija kampanja");
+        }
 
 
         return Optional.of(topCampaign.get());

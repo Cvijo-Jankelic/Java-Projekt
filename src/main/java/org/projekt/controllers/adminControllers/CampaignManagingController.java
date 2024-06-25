@@ -61,7 +61,7 @@ public class CampaignManagingController  {
     private TableColumn<Campaign, String> companyCampaignTableColumn;
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
-    private static final String campaignDat = "serializedDat/campaignSerialized.ser";
+    private static final String campaignDat = "serializedDat/campaignSerialized.dat";
 
 
     public void initialize(){

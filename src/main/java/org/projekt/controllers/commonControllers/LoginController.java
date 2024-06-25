@@ -8,6 +8,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.projekt.Enum.Role;
 import org.projekt.entity.AppUser;
+import org.projekt.exceptions.LoginFailedException;
 import org.projekt.records.SessionUser;
 import org.projekt.runner.HelloApplication;
 import org.projekt.services.LoginService;
@@ -77,7 +78,14 @@ public class LoginController {
             } else {
                 wrongLogIn.setText("Wrong username or password!");
             }
-        }catch (IOException ex){
+
+        }
+        catch (LoginFailedException ex){
+            System.out.println(ex.getMessage());
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        catch (IOException ex){
             String msg = "Doslo je do pogreske tokom mijenjanja scene poslije prijave";
             System.out.printf(msg);
             logger.error(ex.getMessage());

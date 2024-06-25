@@ -39,3 +39,10 @@ build/
 
 ### Logs ###
 logs/pogreske.log
+
+### Serialized folder ###
+serializedDat/adsSerialized.ser
+serializedDat/campaignChanges.ser
+serializedDat/campaignSerialized.dat
+serializedDat/companySerialized.ser
+serializedDat/userSerialized.ser
